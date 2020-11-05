@@ -132,11 +132,9 @@ func (b Backend) getNodeExporterPodIPsOnNodes(nodes []*corev1.Node) ([]string, e
 	targets, _ := b.prometheus.Targets(ctx)
 	for _, active := range targets.Active {
 		jobName := string(active.DiscoveredLabels["job"])
-		log.Infof("job %v %v", jobName, active.DiscoveredLabels)
 		split := strings.Split(jobName, "/")
 		if split[1] == "node-exporter" {
 			for _, node := range nodes {
-				log.Infof("comparing %v vs %v", string(active.DiscoveredLabels["__meta_kubernetes_pod_node_name"]), node.ObjectMeta.Name)
 				if string(active.DiscoveredLabels["__meta_kubernetes_pod_node_name"]) == node.ObjectMeta.Name {
 					podIPs = append(podIPs, string(active.DiscoveredLabels["__meta_kubernetes_pod_ip"]))
 				}
