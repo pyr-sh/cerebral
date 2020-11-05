@@ -73,7 +73,7 @@ func main() {
 		kubeclientset, kubeInformerFactory, cerebralclientset, cerebralInformerFactory)
 
 	autoscalingEngineController := controller.NewAutoscalingEngine(
-		kubeclientset, kubeInformerFactory, cerebralclientset, cerebralInformerFactory)
+		kubeclientset, kubeInformerFactory, cerebralclientset, cerebralInformerFactory, config)
 
 	kubeInformerFactory.Start(stopCh)
 	cerebralInformerFactory.Start(stopCh)

@@ -11,6 +11,7 @@ import (
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	corelistersv1 "k8s.io/client-go/listers/core/v1"
+	rest "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/util/workqueue"
 
@@ -23,8 +24,8 @@ import (
 
 	"github.com/containership/cerebral/pkg/autoscaling"
 	"github.com/containership/cerebral/pkg/autoscaling/engines/aws"
-	"github.com/containership/cerebral/pkg/autoscaling/engines/containership"
 	"github.com/containership/cerebral/pkg/autoscaling/engines/digitalocean"
+	"github.com/containership/cerebral/pkg/autoscaling/engines/ovh"
 
 	"github.com/pkg/errors"
 )
@@ -44,6 +45,7 @@ const (
 type AutoscalingEngineController struct {
 	kubeclientset     kubernetes.Interface
 	cerebralclientset cerebral.Interface
+	config            *rest.Config
 
 	autoscalingEngineLister clisters.AutoscalingEngineLister
 	autoscalingEngineSynced cache.InformerSynced
@@ -60,12 +62,14 @@ type AutoscalingEngineController struct {
 func NewAutoscalingEngine(kubeclientset kubernetes.Interface,
 	kubeInformerFactory kubeinformers.SharedInformerFactory,
 	cerebralclientset cerebral.Interface,
-	cInformerFactory cinformers.SharedInformerFactory) *AutoscalingEngineController {
+	cInformerFactory cinformers.SharedInformerFactory,
+	config *rest.Config) *AutoscalingEngineController {
 	rateLimiter := workqueue.NewItemExponentialFailureRateLimiter(autoscalingEngineDelayBetweenRequeues, autoscalingEngineMaxRequeues)
 
 	c := &AutoscalingEngineController{
 		kubeclientset:     kubeclientset,
 		cerebralclientset: cerebralclientset,
+		config:            config,
 		workqueue:         workqueue.NewNamedRateLimitingQueue(rateLimiter, autoscalingEngineControllerName),
 	}
 
@@ -230,7 +234,7 @@ func (c *AutoscalingEngineController) syncHandler(key string) error {
 
 	log.Infof("Instantiating engine client for AutoscalingEngine %q", name)
 
-	client, err := instantiateEngine(engine, c.nodeLister)
+	client, err := instantiateEngine(engine, c.config, c.nodeLister)
 	if err != nil {
 		return errors.Wrapf(err, "instantiating engine client for AutoscalingEngine %q", name)
 	}
@@ -243,18 +247,8 @@ func (c *AutoscalingEngineController) syncHandler(key string) error {
 
 // instantiateEngine instantiates a new engine for the given AutoscalingEngine.
 // It should be the only function that knows how to instantiate a particular engine type.
-func instantiateEngine(engine *cerebralv1alpha1.AutoscalingEngine, nodeLister corelistersv1.NodeLister) (autoscaling.Engine, error) {
+func instantiateEngine(engine *cerebralv1alpha1.AutoscalingEngine, config *rest.Config, nodeLister corelistersv1.NodeLister) (autoscaling.Engine, error) {
 	switch engine.Spec.Type {
-	case "containership":
-		// Ignore defensive checks on engine property values since validation happens
-		// upon new client creation. We're explicitly not copying the name and configuration
-		// here since it is assumed that NewClient will not modify the parameters
-		cae, err := containership.NewClient(engine.Name, engine.Spec.Configuration, nodeLister)
-		if err != nil {
-			return nil, errors.Wrapf(err, "constructing new containership engine %q", engine.Name)
-		}
-
-		return cae, nil
 
 	case "aws":
 		awsEngine, err := aws.NewClient(engine.Name, nodeLister)
@@ -271,6 +265,14 @@ func instantiateEngine(engine *cerebralv1alpha1.AutoscalingEngine, nodeLister co
 		}
 
 		return do, nil
+
+	case "ovh":
+		ovhEngine, err := ovh.NewClient(engine.Name, config, nodeLister)
+		if err != nil {
+			return nil, errors.Wrapf(err, "constructing new ovh engine %q", engine.Name)
+		}
+
+		return ovhEngine, nil
 
 	default:
 		return nil, errors.Errorf("unknown engine type %q", engine.Spec.Type)

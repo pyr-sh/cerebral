@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"go.toolsEnvVars": {
+			"GO111MODULE": "off",
+		}
+	}
+}
