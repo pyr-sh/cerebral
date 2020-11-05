@@ -20,8 +20,8 @@ package fake
 
 import (
 	clientset "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned"
-	ovhv1alpha1 "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned/typed/nodepools.kube.cloud.ovh.com/v1alpha1"
-	fakeovhv1alpha1 "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned/typed/nodepools.kube.cloud.ovh.com/v1alpha1/fake"
+	ovhv1alpha1 "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned/typed/kube.cloud.ovh.com/v1alpha1"
+	fakeovhv1alpha1 "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned/typed/kube.cloud.ovh.com/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

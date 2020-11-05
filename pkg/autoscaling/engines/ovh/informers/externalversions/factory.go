@@ -25,7 +25,7 @@ import (
 
 	versioned "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned"
 	internalinterfaces "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/informers/externalversions/internalinterfaces"
-	nodepoolskubecloudovhcom "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/informers/externalversions/nodepools.kube.cloud.ovh.com"
+	kubecloudovhcom "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/informers/externalversions/kube.cloud.ovh.com"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -172,9 +172,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	OVH() nodepoolskubecloudovhcom.Interface
+	OVH() kubecloudovhcom.Interface
 }
 
-func (f *sharedInformerFactory) OVH() nodepoolskubecloudovhcom.Interface {
-	return nodepoolskubecloudovhcom.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) OVH() kubecloudovhcom.Interface {
+	return kubecloudovhcom.New(f, f.namespace, f.tweakListOptions)
 }

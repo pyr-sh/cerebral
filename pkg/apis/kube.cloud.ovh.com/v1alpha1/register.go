@@ -5,11 +5,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	nodepoolskubecloudovhcom "github.com/containership/cerebral/pkg/apis/nodepools.kube.cloud.ovh.com"
+	kubecloudovhcom "github.com/containership/cerebral/pkg/apis/kube.cloud.ovh.com"
 )
 
 // SchemeGroupVersion is group version used to register these objects
-var SchemeGroupVersion = schema.GroupVersion{Group: nodepoolskubecloudovhcom.GroupName, Version: "v1alpha1"}
+var SchemeGroupVersion = schema.GroupVersion{Group: kubecloudovhcom.GroupName, Version: "v1alpha1"}
 
 // Resource takes an unqualified resource and returns a Group qualified GroupResource
 func Resource(resource string) schema.GroupResource {

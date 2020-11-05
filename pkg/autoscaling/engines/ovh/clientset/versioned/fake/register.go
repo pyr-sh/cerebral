@@ -19,7 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	ovhv1alpha1 "github.com/containership/cerebral/pkg/apis/nodepools.kube.cloud.ovh.com/v1alpha1"
+	ovhv1alpha1 "github.com/containership/cerebral/pkg/apis/kube.cloud.ovh.com/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

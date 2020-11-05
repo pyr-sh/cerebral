@@ -7,7 +7,7 @@ import (
 	corelistersv1 "k8s.io/client-go/listers/core/v1"
 	rest "k8s.io/client-go/rest"
 
-	nodepool "github.com/containership/cerebral/pkg/apis/nodepools.kube.cloud.ovh.com/v1alpha1"
+	nodepool "github.com/containership/cerebral/pkg/apis/kube.cloud.ovh.com/v1alpha1"
 	"github.com/containership/cerebral/pkg/autoscaling"
 	nodepoolClient "github.com/containership/cerebral/pkg/autoscaling/engines/ovh/clientset/versioned"
 )

@@ -13,4 +13,4 @@ ${CODEGEN_PKG}/generate-groups.sh all \
 
 ${CODEGEN_PKG}/generate-groups.sh all \
   github.com/containership/cerebral/pkg/autoscaling/engines/ovh github.com/containership/cerebral/pkg/apis \
-  "nodepools.kube.cloud.ovh.com:v1alpha1"
+  "kube.cloud.ovh.com:v1alpha1"
