@@ -30,16 +30,15 @@ type Interface interface {
 
 type version struct {
 	factory          internalinterfaces.SharedInformerFactory
-	namespace        string
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 }
 
 // New returns a new Interface.
-func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakListOptions internalinterfaces.TweakListOptionsFunc) Interface {
-	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
+func New(f internalinterfaces.SharedInformerFactory, tweakListOptions internalinterfaces.TweakListOptionsFunc) Interface {
+	return &version{factory: f, tweakListOptions: tweakListOptions}
 }
 
 // NodePools returns a NodePoolInformer.
 func (v *version) NodePools() NodePoolInformer {
-	return &nodePoolInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+	return &nodePoolInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
 }

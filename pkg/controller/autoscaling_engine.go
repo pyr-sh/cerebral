@@ -25,6 +25,7 @@ import (
 	"github.com/containership/cerebral/pkg/autoscaling"
 	"github.com/containership/cerebral/pkg/autoscaling/engines/aws"
 	"github.com/containership/cerebral/pkg/autoscaling/engines/digitalocean"
+	"github.com/containership/cerebral/pkg/autoscaling/engines/oracle"
 	"github.com/containership/cerebral/pkg/autoscaling/engines/ovh"
 
 	"github.com/pkg/errors"
@@ -262,6 +263,14 @@ func instantiateEngine(engine *cerebralv1alpha1.AutoscalingEngine, config *rest.
 		do, err := digitalocean.NewClient(engine.Name, engine.Spec.Configuration, nodeLister)
 		if err != nil {
 			return nil, errors.Wrapf(err, "constructing new digitalocean engine %q", engine.Name)
+		}
+
+		return do, nil
+
+	case "oracle":
+		do, err := oracle.NewClient(engine.Name, engine.Spec.Configuration, nodeLister)
+		if err != nil {
+			return nil, errors.Wrapf(err, "constructing new oracle engine %q", engine.Name)
 		}
 
 		return do, nil

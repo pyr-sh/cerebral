@@ -52,10 +52,10 @@ func TestInstantiateEngine(t *testing.T) {
 
 	nodeLister := kubernetestest.BuildNodeLister([]corev1.Node{node})
 
-	c, err := instantiateEngine(fakeContainershipASE, nodeLister)
+	c, err := instantiateEngine(fakeContainershipASE, nil, nodeLister)
 	assert.NoError(t, err, "Test that engine instantiation does not error")
 	assert.NotNil(t, c, "Test that engine is instantiated")
 
-	c, err = instantiateEngine(fakeInvalidASE, nodeLister)
+	c, err = instantiateEngine(fakeInvalidASE, nil, nodeLister)
 	assert.Error(t, err, "Test that engine instantiation errors for invalid type")
 }

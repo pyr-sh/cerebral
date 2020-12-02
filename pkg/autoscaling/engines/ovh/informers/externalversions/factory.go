@@ -176,5 +176,5 @@ type SharedInformerFactory interface {
 }
 
 func (f *sharedInformerFactory) OVH() kubecloudovhcom.Interface {
-	return kubecloudovhcom.New(f, f.namespace, f.tweakListOptions)
+	return kubecloudovhcom.New(f, f.tweakListOptions)
 }
