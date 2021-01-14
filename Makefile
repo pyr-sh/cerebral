@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 PROJECT_NAME ?= "cerebral"
-IMAGE_NAME ?= "containership/$(PROJECT_NAME)"
+IMAGE_NAME ?= "pyrsh/$(PROJECT_NAME)"
 IMAGE_TAG ?= "latest"
 PKG_LIST := $(shell go list ./...)
 GO_FILES := $(shell find . -type f -not -path './vendor/*' -name '*.go')

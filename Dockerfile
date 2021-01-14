@@ -11,11 +11,6 @@ ENV SRC_DIR=/go/src/github.com/containership/cerebral/
 
 WORKDIR /app
 
-# Install deps before adding rest of source so we can cache the resulting vendor dir
-COPY Gopkg.toml Gopkg.lock $SRC_DIR
-RUN cd $SRC_DIR && \
-    dep ensure -vendor-only
-
 # Add the source code
 COPY . $SRC_DIR
 

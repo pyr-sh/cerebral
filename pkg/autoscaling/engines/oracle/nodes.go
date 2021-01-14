@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	poolNameLabelKey    = "name"
-	compartmentLabelKey = "oci.oraclecloud.com/compartment-id"
+	poolNameLabelKey         = "name"
+	compartmentAnnotationKey = "oci.oraclecloud.com/compartment-id"
 )
 
 // returns all nodes that match the passed in node selector
@@ -56,9 +56,9 @@ func getRandomPoolToScale(
 	if !ok {
 		return "", "", errors.New("does not contain pool name label key")
 	}
-	compartment, ok := node.Labels[compartmentLabelKey]
+	compartment, ok := node.Annotations[compartmentAnnotationKey]
 	if !ok {
-		return "", "", errors.New("does not contain compartment label key")
+		return "", "", errors.New("does not contain compartment annotation key")
 	}
 
 	return id, compartment, nil
